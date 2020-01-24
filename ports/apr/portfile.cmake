@@ -18,11 +18,9 @@ vcpkg_extract_source_archive_ex(
 )
 
 if (VCPKG_TARGET_IS_WINDOWS)
-    if("private-headers" IN_LIST FEATURES)
-        set(INSTALL_PRIVATE_H ON)
-    else()
-        set(INSTALL_PRIVATE_H OFF)
-    endif()
+    vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
+        private-headers   INSTALL_PRIVATE_H
+    )
 
     vcpkg_configure_cmake(
         SOURCE_PATH ${SOURCE_PATH}
@@ -32,6 +30,7 @@ if (VCPKG_TARGET_IS_WINDOWS)
             -DMIN_WINDOWS_VER=Windows7
             -DAPR_HAVE_IPV6=ON
             -DAPR_INSTALL_PRIVATE_H=${INSTALL_PRIVATE_H}
+            ${FEATURE_OPTIONS}
         # OPTIONS -DUSE_THIS_IN_ALL_BUILDS=1 -DUSE_THIS_TOO=2
         # OPTIONS_RELEASE -DOPTIMIZE=1
         # OPTIONS_DEBUG -DDEBUGGABLE=1
@@ -93,5 +92,5 @@ else()
 endif()
 
 # Handle copyright
-file(COPY ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/apr)
-file(RENAME ${CURRENT_PACKAGES_DIR}/share/apr/LICENSE ${CURRENT_PACKAGES_DIR}/share/apr/copyright)
+file(INSTALL ${SOURCE_PATH}/LICENSE DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT} RENAME copyright)
+
