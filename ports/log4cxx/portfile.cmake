@@ -10,7 +10,7 @@ vcpkg_from_github(
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
     OPTIONS
-        -DLOG4CXX_INSTALL_PDB=ON
+        -DLOG4CXX_INSTALL_PDB=OFF # Installing pdbs failed on debug static. So, disable it and let vcpkg_copy_pdbs() do it
 )
 
 vcpkg_install_cmake()
